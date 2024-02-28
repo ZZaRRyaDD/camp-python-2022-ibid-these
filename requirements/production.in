@@ -1,0 +1,113 @@
+# *************************************************
+# Django packages
+# *************************************************
+django==4.0.*
+
+# Different useful Django utils
+# https://django-extensions.readthedocs.io/en/latest/
+django-extensions==3.1.*
+
+# Control CORS headers from within the app
+# https://pypi.org/project/django-cors-headers/
+django-cors-headers==3.11.*
+
+# Filter querysets dynamically
+# https://django-filter.readthedocs.io/en/stable/
+django-filter==21.*
+
+# Raw operations on the image (like to crop avatars etc)
+# https://django-imagekit.readthedocs.io/en/latest/
+django-imagekit==4.1.*
+
+# Low-level library for working with images
+# https://pillow.readthedocs.io/en/stable/
+Pillow==9.0.*
+
+# HTML sanitizing library that escapes or strips markup and attributes
+# https://pypi.org/project/bleach/
+bleach==4.1.*
+
+# Django REST Framework
+# https://www.django-rest-framework.org/
+djangorestframework==3.13.*
+# Secure token-based auth for drf
+# https://james1345.github.io/django-rest-knox/
+django-rest-knox==4.2.0
+
+# OpenApi auto specs generator
+# https://drf-spectacular.readthedocs.io/en/latest/
+drf-spectacular==0.21.*
+
+# Storage to AWS S3
+# https://django-storages.readthedocs.io/en/latest/
+django-storages[boto3]==1.12.*
+
+# Database abstraction layer
+# https://pypi.org/project/psycopg2-binary/
+psycopg2-binary==2.9.*
+
+# Celery
+# https://docs.celeryproject.org/en/stable/
+celery[redis]==5.2.*
+# Periodic tasks
+# https://github.com/celery/django-celery-beat
+# Wait for pypi release of Django 4+ support
+git+https://github.com/celery/django-celery-beat.git@716a46ed34dc64c179fcf022b2aa6e7db146c947#egg=django-celery-beat
+
+# Redis cache backend for Django
+# https://github.com/jazzband/django-redis
+django-redis==5.2.*
+
+# Django health check
+# This project checks for various conditions and provides reports when anomalous behavior is detected.
+# https://github.com/KristianOellegaard/django-health-check
+django-health-check==3.16.*
+
+# Django support for bootstrap forms
+# https://github.com/django-crispy-forms/django-crispy-forms
+django-crispy-forms==1.14.*
+
+# Bootstrap5 template pack for django-crispy-forms
+# https://github.com/django-crispy-forms/crispy-bootstrap5
+crispy-bootstrap5==0.6
+
+# Testing
+pytest==7.0.*
+# Provides useful tools for testing Django apps
+# Docs https://pytest-django.readthedocs.io/en/latest/
+pytest-django
+# To run test in parallel
+# Docs: https://docs.pytest.org/en/3.0.1/xdist.html
+pytest-xdist
+# To prettify pytest output
+pytest-sugar
+# Fast creating of model instances. May be used in tests
+# https://factoryboy.readthedocs.io/en/stable/
+factory-boy
+
+# Prettified output in logging
+# https://rich.readthedocs.io/en/latest/introduction.html
+rich==11.*
+
+# convert Markdown syntax into HTML
+# Differences
+# markdown - https://jing.saritasa.com/StanislavKhlud/StanislavKhlud_13-21-40-0695d56330c2fb7a101829fa25.png
+# mistune - https://jing.saritasa.com/StanislavKhlud/StanislavKhlud_13-22-47-84e2122e18f54b6563433046b2.png
+# Also mistune has better performance -> https://github.com/lepture/mistune/issues/1
+# Learn more here -> https://github.com/lepture/mistune
+# Frozen version because of jupyter. TODO: unfreeze it after jupyter update
+mistune<2
+
+# DateTime manipulation library
+# https://arrow.readthedocs.io/en/stable/
+arrow==1.2.*
+
+## Devops tools
+
+# uwsgi
+# The uWSGI server as a Python module
+# https://pypi.org/project/pyuwsgi/
+pyuwsgi==2.0.20
+# uwsgitop is a top-like command that uses the uWSGI Stats Server to monitor your uwsgi application.
+# https://pypi.org/project/uwsgitop/
+uwsgitop==0.11

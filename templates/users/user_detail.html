@@ -1,0 +1,111 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+Profile User
+{% endblock %}
+
+{% block stylesheets %}
+  <style>
+    th > a {
+      letter-spacing: 0;
+      color: #67748e;
+    }
+    
+    #lost-container {
+      max-height: {% if request.user == user %}33vh{% else %}60vh{% endif %};
+    }
+
+    #bids-container {
+      max-height: 30vh;
+    }
+  </style>
+{% endblock stylesheets %}
+
+{% block content %}
+<div class="row p-2">
+  <div class="col-3">
+    <img class="img-thumbnail mt-2" src="
+    {% if user.avatar %}
+      {{ user.avatar.url }}
+    {% endif %}
+    "/>
+    <span class="d-block fs-2 m-2">{{ user.first_name }} {{ user.last_name }}</span>
+    <span class="text-muted fs-5 m-2 ms-4">{{ user.email }}</span>
+  </div>
+  <div class="col-9">
+    <div class="position-relative container-fluid p-0">
+      <h3 class="col-12 text-center my-2 mx-0">Username lots</h3>
+      {% if request.user == user %}
+        <a href="{% url 'lots:create' %}" class="position-absolute top-0 end-0 mt-2 me-5 py-1 px-4 btn bg-gradient-success">Add lot</a>
+      {% endif %}
+      <div class="row overflow-auto" id="lost-container">
+        {% if lots %}
+          {% for item in lots.all %}
+            <div class="row my-1">
+              <a href="{% url 'lots:details' item.pk %}" class="col-2">
+                {% with preview=item.images.all|first %}
+                  <img src="{{ preview.image.url }}" class="img-thumbnail">
+                {% endwith %}
+              </a>
+              <div class="col-6">
+                <span class="d-block fs-5">{{ item.name }}</span>
+                <span>{{ item.description }}</span>
+              </div>
+              <div class="col-4 d-flex flex-column justify-content-evenly">
+                {% if item.status == "DRAFT" %}
+                  <a class="col-4 btn ms-auto" href="{% url 'lots:update' item.pk %}">
+                    Edit
+                  </a>
+                {% endif %}
+                <div class="col-12 text-end">
+                  {% if item.status == "DRAFT" %}
+                    <span class="badge bg-light">{{ item.get_status_display }}</span>
+                  {% elif item.status == "IN_PROCCESS" %}
+                    <span class="badge bg-success">{{ item.get_status_display }}</span>
+                  {% elif item.status == "FINISHED" %}
+                    <span class="badge bg-secondary">{{ item.get_status_display }}</span>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        {% else %}
+            <p class="col text-center">{% trans "Nothing found" %}</p>
+        {% endif %}
+      </div>
+      <br>
+      {% if request.user == user %}
+        <h3 class="col-12 text-center my-2 mx-0">Username bids</h3>
+        <div class="container-fluid overflow-auto" id="bids-container">
+          <table class="table table-hover">
+            {% if bids %}
+              <thead>
+                <tr>
+                  <th scope="col" class="fs-4 px-1">Lot Name</th>
+                  <th scope="col" class="fs-4 px-1">Bid amount</th>
+                  <th scope="col" class="fs-4 px-1">Bid time</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for item in bids.all %}
+                  <tr {% if item != item.lot.bids.all|first %}class="alert alert-danger"{% endif %}>
+                    <th scope="row"><a href="{% url 'lots:details' item.lot.pk %}">{{ item.lot.name }}</a></th>
+                    <th>{{ item.bid }}</th>
+                    <th>{{ item.created }}</th>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            {% else %}
+                <p class="col text-center">{% trans "Nothing found" %}</p>
+            {% endif %}
+          </table>
+        </div>
+      {% endif %}
+    </div>
+    <div class="container-fluid">
+    </div>
+  </div>
+</div>
+{% endblock %}

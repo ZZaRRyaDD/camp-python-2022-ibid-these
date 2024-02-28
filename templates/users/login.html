@@ -1,0 +1,19 @@
+{% extends 'users/form.html' %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "Login" %}
+{% endblock %}
+
+{% block form-title %}
+  {% trans "Log in system" %}
+{% endblock %}
+
+{% block additional_content %}
+  <a href="{% url 'users:reset-password' %}" class="col-4 offset-4 mb-2 text-center">
+    {% trans "Forgot password?" %}
+  </a>
+  <a href="{% url 'users:registration' %}" class="col-4 offset-4 mb-2 text-center">
+    {% trans "Don't have an account?" %}
+  </a>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title%}{% trans "Update Lot" %}{% endblock %}
+
+{% block content %}
+    <form action="{% url 'lots:update' lot.id %}" method="post" enctype="multipart/form-data">
+        {% csrf_token%}
+        {{ form|crispy }}
+        <div class="row">
+            {{ lot_images_formset.non_form_errors }}
+            {{ lot_images_formset.management_form }}
+            {% for image in lot_images_formset %}
+                {{ image.id }}
+                {% if image.instance.id %}
+                    <div class="my-1 {{ lot_images_formset.prefix }} formset_row">
+                        <div class="col ml-4">{{ image.DELETE }}</div>
+                        {{ image.instance.image }}
+                    </div>
+                {% else %}
+                    <div class="my-1 {{ lot_images_formset.prefix }} formset_row">
+                        <div class="col ml-4">{{ image.DELETE }}</div>
+                        {{ image.image }}
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        <button class="btn" type="submit">{% trans "Update Lot" %}</button>
+    </form>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="{% static 'jquery.formset.js' %}"></script>
+    <script type="text/javascript">
+        $('.formset_row').formset({
+            prefix: '{{ lot_images_formset.prefix }}',
+            addText: 'Add image',
+            deleteText: 'Delete',
+            addCssClass: 'add-row my-1', 
+        });
+    </script>
+{% endblock %}

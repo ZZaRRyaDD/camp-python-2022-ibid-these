@@ -1,0 +1,87 @@
+{% load static %}
+{% load i18n %}
+  <header class="header-main">
+    <nav class="container navbar navbar-main bg-white border-radius-xl py-2" data-lots-list-url="{% url 'lots:list' %}">
+      <div class="col-12 row ms-auto mb-2">
+        <div class="col-3">
+            <a class="navbar-brand" href="{% url 'lots:list' %}">IBidThese</a>
+        </div>
+        <div class="col-6 align-items-center">
+          <div class="bg-white row">
+            <form class="d-flex search border-radius-lg d-flex me-2 col-9" method="GET" action="{% url 'lots:list' %}">
+              <input name="search" type="text" class="form-control border-0 ps-3" placeholder="Type here...">
+              <button type="submit" class="btn bg-gradient-primary my-1 me-1 ms-2">{% trans "Search" %}</button>
+            </form>
+            <div class="row col-3 col-3">
+              <div class="col-auto ms-auto">
+                <div class="dropdown">
+                  <a class="cursor-pointer" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="{% static 'bell.png' %}" height="32px" alt="{% trans 'Bell' %}">
+                  </a>
+                  <ul class="dropdown-menu dropdown-menu-right px-2 py-3 ms-n4" aria-labelledby="dropdownMenuButton">
+                    <li>...</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 row mx-auto p-1">
+        <div class="col">
+          <select id="category" class="form-select border-0 p-0">
+            <option class="text-center" value="" selected>{% trans "Categories" %}</option>
+            {% for category in categories %}
+               <option class="text-center" name="category" value="{{ category.name }}">{% trans category.name %}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col text-center">
+          <a href="{% url "lots:favorites" %}">{% trans "Favorites" %}</a>
+        </div>
+        <div class="col text-center">
+          <a href="">{% trans "Newly Listed" %}</a>
+        </div>
+        <div class="col text-center">
+          <div class="col dropdown d-inline">
+            <a class="cursor-pointer" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+              <p>
+                {% if request.user.is_authenticated %}
+                  {% trans "Hi" %}, {% if user.first_name %}{{ user.first_name }}{% else %}Username{% endif %}
+                {% else %}
+                  {% trans "My profile" %}
+                {% endif %}
+              </p>
+            </a>
+            <ul class="dropdown-menu dropdown-menu-right px-2 py-3 ms-n4" aria-labelledby="dropdownMenuButton">
+              {% if request.user.is_authenticated %}
+                <a href="{% url 'users:profile' request.user.pk %}">
+                  <li>
+                    {% trans "Profile" %}
+                  </li>
+                </a>
+              {% endif %}
+              <a href="{% url 'users:profile-edit' %}">
+                <li>
+                  {% trans "Profile settings" %}
+                </li>
+              </a>
+                {% if request.user.is_authenticated %}
+                  <a href="{% url 'users:logout' %}">
+                    <li>
+                      {% trans "Logout" %}
+                    </li>
+                  </a>
+                {% else %}
+                  <a href="{% url 'users:login' %}">
+                    <li>
+                      {% trans "Login" %}
+                    </li>
+                  </a>
+                {% endif %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>

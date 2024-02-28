@@ -1,0 +1,10 @@
+{% extends 'users/form.html' %}
+{% load i18n %}
+
+{% block title %}
+  {% trans "Editing" %} {{ user.email }} {% trans "profile" %}
+{% endblock %}
+
+{% block form-title %}
+  {% trans "Editing" %} {{ user.email }} {% trans "profile" %}
+{% endblock %}

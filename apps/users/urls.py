@@ -1,0 +1,85 @@
+from django.contrib.auth import views as auth_views
+from django.urls import path, reverse_lazy
+
+from . import views
+
+app_name = "users"
+urlpatterns = [
+    path(
+        "login/",
+        auth_views.LoginView.as_view(
+            template_name="users/login.html",
+            next_page=reverse_lazy("lots:list"),
+        ),
+        name="login",
+    ),
+    path(
+        "logout/",
+        auth_views.LogoutView.as_view(
+            template_name="users/success.html",
+            next_page=reverse_lazy("users:login"),
+        ),
+        name="logout",
+    ),
+    path(
+        "change-password/",
+        auth_views.PasswordChangeView.as_view(
+            template_name="users/change_password.html",
+            success_url=reverse_lazy("users:change-password-done"),
+        ),
+        name="change-password",
+    ),
+    path(
+        "change-password/done/",
+        auth_views.PasswordChangeDoneView.as_view(
+            template_name="users/success.html",
+        ),
+        name="change-password-done",
+    ),
+    path(
+        "reset-password/",
+        auth_views.PasswordResetView.as_view(
+            template_name="users/reset_password.html",
+            email_template_name="users/emails/password_reset.html",
+            success_url=reverse_lazy("users:reset-password-send"),
+        ),
+        name="reset-password",
+    ),
+    path(
+        "reset-password/done/",
+        auth_views.PasswordResetDoneView.as_view(
+            template_name="users/success.html",
+        ),
+        name="reset-password-send",
+    ),
+    path(
+        "reset/token-<uidb64>-<token>/",
+        auth_views.PasswordResetConfirmView.as_view(
+            template_name="users/reset_password_complete.html",
+            success_url=reverse_lazy("users:reset-password-done"),
+        ),
+        name="reset-password-confirm",
+    ),
+    path(
+        "reset/done/",
+        auth_views.PasswordResetCompleteView.as_view(
+            template_name="users/success.html",
+        ),
+        name="reset-password-done",
+    ),
+    path(
+        "registration/",
+        views.RegistrationView.as_view(),
+        name="registration",
+    ),
+    path(
+        "profile/<int:pk>/",
+        views.UserDetailView.as_view(),
+        name="profile",
+    ),
+    path(
+        "profile/edit/",
+        views.UserEditView.as_view(),
+        name="profile-edit",
+    ),
+]

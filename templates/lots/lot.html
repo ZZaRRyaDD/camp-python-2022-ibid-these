@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ lot.name }}{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+{% endblock %}
+
+{% block content %}
+    <div class="main py-2">
+        <div class="row">
+            <div id="carouselIndicators" class="carousel slide col-5" data-bs-ride="carousel">
+                <div class="carousel-inner col-4">
+                    {% for image in lot.images.all %}
+                        <div class="carousel-item {% if forloop.first %} active {% endif %}">
+                            <img src="{{ image.image.url }}" class="d-block w-100">
+                        </div>
+                    {% endfor %}
+                </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselIndicators" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselIndicators" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
+            </div>
+            <div class="info col-7">
+                <h5>{% trans lot.name %}</h5>
+                <p>{% trans "Description" %}: {% trans lot.description %}</p>
+                <p>{% trans "User" %}: {{ lot.user.full_name }}</p>
+                <p>{% trans "Start price" %}: {{ lot.start_price }}</p>
+                <p>{% trans "Redemption price:" %} {{ lot.redemption_price }}</p>
+                <p>{% trans "Status" %}: {{ lot.get_status_display }}</p>
+                <p>{% trans "Ending" %}: {{ lot.end_date }}</p>
+            </div>
+        </div>
+        <form action="{% url 'lots:action_favorites_lot' lot.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn fs-6 bi bi-star{% if lot in user.favorite_lots.all %}-fill{% endif %}"></button>
+        </form>
+        <div>
+            {% if user.id != lot.user.id %}
+                <form action="{% url 'lots:details' lot.pk %}" method="post" class="col-5 my-3">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button class="btn" type="submit">{% trans "Add bid" %}</button>
+                </form>
+            {% endif %}
+            <ul class="list-group">
+                {% for bid in lot.bids.all|dictsortreversed:"created" %}
+                    <li class="list-group-item">{% trans "Bid of " %}<span class="fw-bold">{{ bid.user }}</span>{% trans " with " %}<span class="fw-bold">{{ bid.bid }}</span></li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

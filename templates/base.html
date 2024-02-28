@@ -1,0 +1,41 @@
+{% load static %}
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- TODO: add icon for website -->
+  <!-- <link rel="icon" type="image/png" href="{% static 'favicon.png' %}"> -->
+
+  <title>
+    IBidThese - {% block title %}{% endblock %}
+  </title>
+
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
+  <link href="{% static 'nucleo-icons.css' %}" rel="stylesheet" />
+  <link href="{% static 'nucleo-svg.css' %}" rel="stylesheet" />
+  <link id="pagestyle" href="{% static 'soft-ui-dashboard.css' %}" rel="stylesheet" />
+
+  <!-- Specific CSS goes HERE -->
+  {% block stylesheets %}{% endblock stylesheets %}
+
+</head>
+<body class="g-sidenav-show bg-gray-100">
+
+  {% include "includes/navigation.html" %}
+
+  <main class="main-content mt-4 border-radius-lg container bg-white shadow">
+    
+    {% block content %}{% endblock content %}
+
+  </main>
+
+  {% include "includes/scripts.html" %}
+
+  <!-- Specific JS goes HERE --> 
+  {% block javascripts %}{% endblock javascripts %}
+
+</body>
+</html>

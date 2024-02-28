@@ -1,0 +1,46 @@
+
+name: CR
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  cr:
+    runs-on: ubuntu-latest
+    env:
+      DJANGO_SETTINGS_MODULE: config.settings.local
+    strategy:
+      matrix:
+        check: [style, migrations, open_api, tests]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/local_build.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - uses: actions/cache@v2
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/development.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+    - name: Set up Python 3.10.2
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.10.2
+    - name: Install dependencies
+      run: |
+        pip install --upgrade pip wheel setuptools
+        pip install --requirement requirements/local_build.txt
+    - name: Prepare env
+      run: |
+        inv ci.prepare
+    - name: Check
+      run: |
+        inv ci.start --check=${{matrix.check}}
+

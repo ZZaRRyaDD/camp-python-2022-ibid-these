@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+  {% trans 'Success' %}
+{% endblock %}
+
+{% block content %}
+  <div class="p-3 text-center">
+    <h2>{{ title }}</h2>
+  </div>
+{% endblock %}

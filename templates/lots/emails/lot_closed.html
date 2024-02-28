@@ -1,0 +1,18 @@
+{% extends "email_base.html" %}
+{% load i18n %}
+
+{% block email_body %}
+  {% url 'lots:details' lot_id as lot_url %}
+  {% autoescape off %}
+	{% blocktrans with app_url=app_url app_label=app_label %}
+      <p>Hello from {{ app_label }}!</p>
+      <p>
+        You're receiving this e-mail because your lot <a href="{{ app_url }}{{ lot_url }}">{{ lot_name }}</a>
+        was closed due to its end date. Nobody want to buy, maybe you will try with lower start price?
+      </p>
+  {% endblocktrans %}
+      {% blocktrans with app_label=app_label %}
+      <p>Thank you for using {{ app_label }}!</p>
+      {% endblocktrans %}
+  {% endautoescape %}
+{% endblock %}
